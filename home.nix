@@ -36,7 +36,7 @@
     kustomize
     maven
     nixFlakes
-    nixfmt
+    nixpkgs-fmt
     pandoc
     pass
     prometheus
