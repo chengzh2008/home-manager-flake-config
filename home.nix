@@ -39,8 +39,8 @@
     nixpkgs-fmt
     pandoc
     pass
-    prometheus
-    rust-analyzer
+    #prometheus
+    #rust-analyzer
     shfmt
     shellcheck
     ripgrep
@@ -54,6 +54,11 @@
     zsh
     zlib
   ];
+
+  #programs.zsh = {
+  #  enable = true;
+  #  initExtra = builtins.readFile ./zshrc;
+  #};
 
   programs.fzf = {
     enable = true;
