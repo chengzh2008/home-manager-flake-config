@@ -30,6 +30,7 @@
     glslang
     inetutils
     ispell
+    jq
     kind
     kubectl
     kubernetes-helm-wrapped
