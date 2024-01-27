@@ -7,19 +7,11 @@
 
   home.packages = with pkgs; [
     sl
-    azure-cli
-    awscli2
     bashInteractive # related to bash config management
     cachix
-    coursier
-    clang-tools_9
-    cmake
+
+    # doom-emacs dependencies
     coreutils
-    curl
-    ctags
-    docbook5
-    eksctl
-    expat
     fd
     gd
     git
@@ -46,21 +38,39 @@
     shfmt
     shellcheck
     ripgrep
-    sourceHighlight
-    texinfo
-    tmux
-    tree
-    tree-sitter
-    utf8proc
-    wget
-    zsh
-    zlib
+
+    curl
+    git
+    jq
+    nixFlakes
   ];
 
-  #programs.zsh = {
-  #  enable = true;
-  #  initExtra = builtins.readFile ./zshrc;
-  #};
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    enableAutosuggestions = true;
+    syntaxHighlighting = {
+      enable = true;
+    };
+    oh-my-zsh = {
+      enable = true;
+      plugins = [ "git" ];
+      theme = "robbyrussell";
+    };
+    #initExtra = builtins.readFile ./zshrc;
+    initExtra = ''
+      bindkey '^f' autosuggest-accept
+      export TERM=xterm-256color
+      #shell prompt
+      case $TERM
+        in xterm*)
+          precmd () {print -Pn "\e]0;&n@%m: %~\a"}
+          ;;
+      esac
+      # path
+      export PATH=$HOME/.emacs.d/bin:$PATH
+    '';
+  };
 
   programs.fzf = {
     enable = true;
