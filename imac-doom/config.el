@@ -29,6 +29,26 @@
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 
+(setq doom-font (font-spec :family "Fira Code" :size 18)
+      doom-variable-pitch-font (font-spec :family "Fira Code") ; inherits `doom-font''s :size
+      doom-symbol-font (font-spec :family "Fira Mono")
+      doom-big-font (font-spec :family "Fira Code" :size 22)
+)
+
+(let ((ligatures-to-disable '(:true :false :str :list)))
+  (dolist (sym ligatures-to-disable)
+    (plist-put! +ligatures-extra-symbols sym nil)))
+
+;; projectile
+(setq projectile-project-search-path
+      '(
+        "~/code"
+        "~/.config"
+        "~/org"
+        "~/roamnotes"
+))
+
+
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
@@ -41,6 +61,14 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+;; auto tangle
+(use-package! org-auto-tangle
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode)
+  :config
+  (setq org-auto-tangle-default t))
+;; set org-roam
+(setq org-roam-directory "~/roamnotes")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
