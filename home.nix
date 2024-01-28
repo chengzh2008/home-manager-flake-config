@@ -40,6 +40,7 @@
     nixpkgs-fmt
     pandoc
     pass
+    pipx
     #prometheus
     #rust-analyzer
     shfmt
