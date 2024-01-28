@@ -5,13 +5,14 @@
   home.stateVersion = "23.11";
   programs.home-manager.enable = true;
 
+
   home.packages = with pkgs; [
     sl
     bashInteractive # related to bash config management
     cachix
 
     # doom-emacs dependencies
-    coreutils
+   coreutils
     fd
     gd
     git
@@ -41,9 +42,28 @@
 
     curl
     git
+    gzip
     jq
     nixFlakes
   ];
+
+  home.file = {
+    # manage doom config; installation is still manuall
+    doom = {
+      enable = true;
+      executable = false;
+      recursive = true;
+      source = ./doom;
+      target = "${builtins.getEnv "HOME"}/.doom.d";
+    };
+  };
+ 
+  home.activation = {
+    doom = lib.hm.dag.entryAfter [ "onFilesChange" ] ''
+      PATH="${config.home.path}/bin:$PATH"
+      $HOME/.emacs.d/bin/doom sync
+    '';
+  };
 
   programs.zsh = {
     enable = true;
@@ -57,19 +77,7 @@
       plugins = [ "git" ];
       theme = "robbyrussell";
     };
-    #initExtra = builtins.readFile ./zshrc;
-    initExtra = ''
-      bindkey '^f' autosuggest-accept
-      export TERM=xterm-256color
-      #shell prompt
-      case $TERM
-        in xterm*)
-          precmd () {print -Pn "\e]0;&n@%m: %~\a"}
-          ;;
-      esac
-      # path
-      export PATH=$HOME/.emacs.d/bin:$PATH
-    '';
+    initExtra = builtins.readFile ./zshrc;
   };
 
   programs.fzf = {
@@ -80,5 +88,4 @@
     enable = true;
     nix-direnv.enable = true;
   };
-
 }
