@@ -27,7 +27,7 @@
       homeConfigurations.imac =
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${arch};
-          modules = [ ./home.nix ];
+          modules = [ ./imac-home.nix ];
         };
     };
 }
