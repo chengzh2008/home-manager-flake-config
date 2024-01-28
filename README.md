@@ -11,4 +11,4 @@
 
 ### run for a specific user on mbp
 
-`home-manager switch --impure --flake .#imac`
+`home-manager switch --impure --flake .#mbp`
