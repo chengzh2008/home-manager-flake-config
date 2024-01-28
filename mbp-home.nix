@@ -45,6 +45,7 @@
     gzip
     jq
     nixFlakes
+    nixpkgs-fmt
   ];
 
   home.file = {

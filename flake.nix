@@ -23,5 +23,11 @@
           pkgs = nixpkgs.legacyPackages.${arch};
           modules = [ ./mbp-home.nix ];
         };
+
+      homeConfigurations.imac =
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${arch};
+          modules = [ ./home.nix ];
+        };
     };
 }

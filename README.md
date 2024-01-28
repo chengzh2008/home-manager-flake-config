@@ -4,3 +4,5 @@
 
 ## update and run 
 `home-manager switch --impure`
+### run for a specific user on a specific machine
+`home-manager switch --impure --flake .#imac`
