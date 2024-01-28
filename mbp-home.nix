@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 {
-  home.username = "zcheng";
-  home.homeDirectory = "/Users/zcheng";
+  home.username = builtins.getEnv "USER";
+  home.homeDirectory = builtins.getEnv "HOME";
   home.stateVersion = "23.11";
   programs.home-manager.enable = true;
 

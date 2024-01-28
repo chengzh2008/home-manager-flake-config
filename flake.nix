@@ -15,10 +15,10 @@
     defaultPackage.${arch} =
       home-manager.defaultPackage.${arch};
 
-    homeConfigurations.zcheng = # REPLACE ME
+    homeConfigurations.mbp =
       home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${arch};
-        modules = [ ./home.nix ];
+        modules = [ ./mbp-home.nix ];
       };
     };
 }
