@@ -57,11 +57,6 @@
     zlib
   ];
 
-  #programs.zsh = {
-  #  enable = true;
-  #  initExtra = builtins.readFile ./zshrc;
-  #};
-
   programs.fzf = {
     enable = true;
   };

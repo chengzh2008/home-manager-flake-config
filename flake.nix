@@ -9,16 +9,25 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }: let
-    arch = "x86_64-darwin"; # or aarch64-darwin
-  in {
-    defaultPackage.${arch} =
-      home-manager.defaultPackage.${arch};
+  outputs = { nixpkgs, home-manager, ... }:
+    let
+      arch = "x86_64-darwin"; # or aarch64-darwin
+      username = builtins.getEnv "USER";
+    in
+    {
+      defaultPackage.${arch} =
+        home-manager.defaultPackage.${arch};
 
-    homeConfigurations.mbp =
-      home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${arch};
-        modules = [ ./mbp-home.nix ];
-      };
+      homeConfigurations.mbp =
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${arch};
+          modules = [ ./mbp-home.nix ];
+        };
+
+      homeConfigurations.imac =
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${arch};
+          modules = [ ./imac-home.nix ];
+        };
     };
 }
