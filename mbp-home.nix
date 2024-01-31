@@ -20,6 +20,7 @@
     docbook5
     eksctl
     expat
+    emacs29
     fd
     gd
     git
@@ -43,6 +44,7 @@
     pipx
     #prometheus
     #rust-analyzer
+    ruff
     shfmt
     shellcheck
     ripgrep
