@@ -89,7 +89,7 @@
       plugins = [ "git" "vi-mode" ];
       theme = "robbyrussell";
     };
-    initExtra = builtins.readFile ./mbp-zshrc;
+    initExtra = builtins.readFile ./zshrc;
   };
 
   programs.fzf = {

@@ -1,13 +1,11 @@
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/zcheng/.oh-my-zsh"
+#export ZSH="/Users/zcheng/.oh-my-zsh"
 
 
 ZSH_THEME="robbyrussell"
 
 
 plugins=(git vi-mode)
-
-source $ZSH/oh-my-zsh.sh
 
 # doom emacs
 export PATH="$PATH:$HOME/.emacs.d/bin" 

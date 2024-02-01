@@ -55,7 +55,7 @@
       plugins = [ "git" ];
       theme = "robbyrussell";
     };
-    initExtra = builtins.readFile ./imac-zshrc;
+    initExtra = builtins.readFile ./zshrc;
   };
 
   programs.fzf = {
