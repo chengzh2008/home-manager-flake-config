@@ -8,7 +8,6 @@ with pkgs; [
   coreutils
   fd
   emacs29
-  gd
   ripgrep
 
   # common
