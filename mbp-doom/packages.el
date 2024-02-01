@@ -66,4 +66,4 @@
 ;; (package! web-mode)
 ;; (package! geiser-chez)
 ;;(package! gptel)
-(package! ob-http)
+;;(package! ob-http)

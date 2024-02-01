@@ -55,5 +55,4 @@ whoport() {
 
 
 # private stuff
-source ~/.private.zshrc
-
+source ~/.private.zshrc 2> /dev/null
