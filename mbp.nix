@@ -1,0 +1,37 @@
+pkgs:
+with pkgs; [
+  azure-cli
+  awscli2
+  coursier
+  clang-tools_9
+  cmake
+  ctags
+  docbook5
+  eksctl
+  expat
+  gnupg1
+  gnuplot
+  graphviz
+  grpcurl
+  glslang
+  inetutils
+  ispell
+  kubectl
+  maven
+  pandoc
+  pass
+  pipx
+  #prometheus
+  #rust-analyzer
+  ruff
+  shfmt
+  shellcheck
+  ripgrep
+  sourceHighlight
+  texinfo
+  tmux
+  tree
+  tree-sitter
+  utf8proc
+  zlib
+]

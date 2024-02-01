@@ -1,67 +1,10 @@
-tag: { pkgs, config, lib, ... }:
+tag:
+{ pkgs, config, lib, ... }:
 let
-  common-packages = with pkgs; [
-    sl
-    bashInteractive # related to bash config management
-    cachix
-
-    # doom-emacs
-    coreutils
-    fd
-    emacs29
-    gd
-    ripgrep
-
-    # common
-    curl
-    git
-    gzip
-    jq
-    nixFlakes
-    nixfmt # used as doom nix formatter
-    nixpkgs-fmt # used for vscode nix formatter
-    wget
-  ];
-  mbp-packages =
-    with pkgs; [
-      azure-cli
-      awscli2
-      coursier
-      clang-tools_9
-      cmake
-      ctags
-      docbook5
-      eksctl
-      expat
-      gnupg1
-      gnuplot
-      graphviz
-      grpcurl
-      glslang
-      inetutils
-      ispell
-      kubectl
-      maven
-      pandoc
-      pass
-      pipx
-      #prometheus
-      #rust-analyzer
-      ruff
-      shfmt
-      shellcheck
-      ripgrep
-      sourceHighlight
-      texinfo
-      tmux
-      tree
-      tree-sitter
-      utf8proc
-      zlib
-    ];
+  common-packages = import ./common.nix pkgs;
+  mbp-packages = import ./mbp.nix pkgs;
   imac-packages = common-packages;
-in
-{
+in {
   home.username = builtins.getEnv "USER";
   home.homeDirectory = builtins.getEnv "HOME";
   home.stateVersion = "23.11";
@@ -70,7 +13,7 @@ in
   home.packages = {
     "imac" = imac-packages;
     "mbp" = mbp-packages ++ common-packages;
-  }."${tag}";
+  }.${tag};
 
   home.file = {
     # manage doom config; installation is still manuall
@@ -94,9 +37,7 @@ in
     enable = true;
     enableCompletion = true;
     enableAutosuggestions = true;
-    syntaxHighlighting = {
-      enable = true;
-    };
+    syntaxHighlighting = { enable = true; };
     oh-my-zsh = {
       enable = true;
       plugins = [ "git" "vi-mode" ];
@@ -105,9 +46,7 @@ in
     initExtra = builtins.readFile ./zshrc;
   };
 
-  programs.fzf = {
-    enable = true;
-  };
+  programs.fzf = { enable = true; };
 
   programs.direnv = {
     enable = true;
