@@ -31,7 +31,7 @@
       enable = true;
       executable = false;
       recursive = true;
-      source = ./imac-doom;
+      source = ./doom;
       target = "${builtins.getEnv "HOME"}/.doom.d";
     };
   };
