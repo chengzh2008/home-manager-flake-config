@@ -29,6 +29,7 @@
     graphviz
     grpcurl
     glslang
+    gzip
     inetutils
     ispell
     jq
@@ -55,7 +56,6 @@
     tree-sitter
     utf8proc
     wget
-    zsh
     zlib
   ];
 
@@ -75,6 +75,21 @@
       PATH="${config.home.path}/bin:$PATH"
       $HOME/.emacs.d/bin/doom sync
     '';
+  };
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    enableAutosuggestions = true;
+    syntaxHighlighting = {
+      enable = true;
+    };
+    oh-my-zsh = {
+      enable = true;
+      plugins = [ "git" "vi-mode" ];
+      theme = "robbyrussell";
+    };
+    initExtra = builtins.readFile ./mbp-zshrc;
   };
 
   programs.fzf = {
