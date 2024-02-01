@@ -21,13 +21,13 @@
       homeConfigurations.mbp =
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${arch};
-          modules = [ ./mbp-home.nix ];
+          modules = [ (import ./home.nix "mbp") ];
         };
 
       homeConfigurations.imac =
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${arch};
-          modules = [ ./imac-home.nix ];
+          modules = [ (import ./home.nix "imac") ];
         };
     };
 }
