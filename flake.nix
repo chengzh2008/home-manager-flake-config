@@ -13,21 +13,17 @@
     let
       arch = "x86_64-darwin"; # or aarch64-darwin
       username = builtins.getEnv "USER";
-    in
-    {
-      defaultPackage.${arch} =
-        home-manager.defaultPackage.${arch};
+    in {
+      defaultPackage.${arch} = home-manager.defaultPackage.${arch};
 
-      homeConfigurations.mbp =
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${arch};
-          modules = [ (import ./home.nix "mbp") ];
-        };
+      homeConfigurations.mbp = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${arch};
+        modules = [ (import ./home.nix "mbp") ];
+      };
 
-      homeConfigurations.imac =
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${arch};
-          modules = [ (import ./home.nix "imac") ];
-        };
+      homeConfigurations.imac = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${arch};
+        modules = [ (import ./home.nix "imac") ];
+      };
     };
 }

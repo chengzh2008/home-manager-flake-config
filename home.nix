@@ -1,38 +1,47 @@
 tag: { pkgs, config, lib, ... }:
 let
+  common-packages = with pkgs; [
+    sl
+    bashInteractive # related to bash config management
+    cachix
+
+    # doom-emacs
+    coreutils
+    fd
+    emacs29
+    gd
+    ripgrep
+
+    # common
+    curl
+    git
+    gzip
+    jq
+    nixFlakes
+    nixfmt # used as doom nix formatter
+    nixpkgs-fmt # used for vscode nix formatter
+    wget
+  ];
   mbp-packages =
     with pkgs; [
-      sl
       azure-cli
       awscli2
-      bashInteractive # related to bash config management
-      cachix
       coursier
       clang-tools_9
       cmake
-      coreutils
-      curl
       ctags
       docbook5
       eksctl
       expat
-      emacs29
-      fd
-      gd
-      git
       gnupg1
       gnuplot
       graphviz
       grpcurl
       glslang
-      gzip
       inetutils
       ispell
-      jq
       kubectl
       maven
-      nixFlakes
-      nixpkgs-fmt
       pandoc
       pass
       pipx
@@ -48,27 +57,9 @@ let
       tree
       tree-sitter
       utf8proc
-      wget
       zlib
     ];
-  imac-packages = with pkgs; [
-    sl
-    bashInteractive # related to bash config management
-    cachix
-
-    # doom-emacs dependencies
-    coreutils
-    fd
-    emacs29
-    ripgrep
-
-    curl
-    git
-    gzip
-    jq
-    nixFlakes
-    nixpkgs-fmt
-  ];
+  imac-packages = common-packages;
 in
 {
   home.username = builtins.getEnv "USER";
@@ -78,7 +69,7 @@ in
 
   home.packages = {
     "imac" = imac-packages;
-    "mbp" = mbp-packages;
+    "mbp" = mbp-packages ++ common-packages;
   }."${tag}";
 
   home.file = {
