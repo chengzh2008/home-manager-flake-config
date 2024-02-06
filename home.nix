@@ -3,15 +3,16 @@ tag:
 let
   common-packages = import ./common.nix pkgs;
   mbp-packages = import ./mbp.nix pkgs;
-  imac-packages = common-packages;
-in {
+in
+{
   home.username = builtins.getEnv "USER";
   home.homeDirectory = builtins.getEnv "HOME";
   home.stateVersion = "23.11";
   programs.home-manager.enable = true;
 
   home.packages = {
-    "imac" = imac-packages;
+    "imac" = common-packages;
+    "linux" = common-packages;
     "mbp" = mbp-packages ++ common-packages;
   }.${tag};
 

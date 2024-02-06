@@ -3,27 +3,35 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/23.11";
+    flake-utils.url = "github:numtide/flake-utils";
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, flake-utils, ... }:
     let
-      arch = "x86_64-darwin"; # or aarch64-darwin
+      intelmac = "x86_64-darwin"; # or aarch64-darwin
+      intellinux = "x86_64-linux"; # or aarch64-darwin
       username = builtins.getEnv "USER";
-    in {
-      defaultPackage.${arch} = home-manager.defaultPackage.${arch};
-
+    in
+    {
       homeConfigurations.mbp = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${arch};
+        pkgs = nixpkgs.legacyPackages.${intelmac};
         modules = [ (import ./home.nix "mbp") ];
       };
 
       homeConfigurations.imac = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${arch};
+        pkgs = nixpkgs.legacyPackages.${intelmac};
         modules = [ (import ./home.nix "imac") ];
       };
-    };
+
+      homeConfigurations.linux = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${intellinux};
+        modules = [ (import ./home.nix "linux") ];
+      };
+    } // flake-utils.lib.eachDefaultSystem (system: {
+      defaultPackage.${system} = home-manager.defaultPackage.${system};
+    });
 }
