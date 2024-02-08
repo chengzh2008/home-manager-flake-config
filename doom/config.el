@@ -221,6 +221,8 @@
   :hook (org-mode . org-auto-tangle-mode)
   :config
   (setq org-auto-tangle-default t))
+(setq org-pretty-entities t)
+(setq org-pretty-entities-include-sub-superscripts t)
 
 ;; set org-roam
 (setq org-roam-directory "~/roamnotes")
