@@ -18,6 +18,7 @@ with pkgs; [
   ispell
   kubectl
   maven
+  python310
   pandoc
   pass
   pipx
