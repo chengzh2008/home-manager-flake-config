@@ -31,6 +31,11 @@
         pkgs = nixpkgs.legacyPackages.${intellinux};
         modules = [ (import ./home.nix "linux") ];
       };
+
+      homeConfigurations.wsl = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${intellinux};
+        modules = [ (import ./home.nix "wsl") ];
+      };
     } // flake-utils.lib.eachDefaultSystem (system: {
       defaultPackage.${system} = home-manager.defaultPackage.${system};
     });

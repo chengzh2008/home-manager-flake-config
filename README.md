@@ -23,3 +23,11 @@
 ### run for a specific user on mbp
 
 `home-manager switch --impure --flake .#mbp`
+
+### run for a specific user on linux 
+
+`home-manager switch --impure --flake .#linux`
+
+### run for a specific user on wsl 
+
+`home-manager switch --impure --flake .#wsl`
