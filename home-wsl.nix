@@ -1,9 +1,7 @@
 tag:
 { pkgs, config, lib, ... }:
 let
-  common-packages = import ./common.nix pkgs;
   common-wsl-packages = import ./common-wsl.nix pkgs;
-  mbp-packages = import ./mbp.nix pkgs;
 in
 {
   home.username = builtins.getEnv "USER";
@@ -12,29 +10,10 @@ in
   programs.home-manager.enable = true;
 
   home.packages = {
-    "imac" = common-packages;
-    "linux" = common-packages;
     "wsl" = common-wsl-packages;
-    "mbp" = mbp-packages ++ common-packages;
   }.${tag};
 
-  home.file = {
-    # manage doom config; installation is still manuall
-    doom = {
-      enable = true;
-      executable = false;
-      recursive = true;
-      source = ./doom;
-      target = "${builtins.getEnv "HOME"}/.doom.d";
-    };
-  };
-
-  home.activation = {
-    doom = lib.hm.dag.entryAfter [ "onFilesChange" ] ''
-      PATH="${config.home.path}/bin:$PATH"
-      $HOME/.emacs.d/bin/doom sync
-    '';
-  };
+  # there are issues when managing doom files through home-manager
 
   programs.zsh = {
     enable = true;
