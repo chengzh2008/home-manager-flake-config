@@ -668,8 +668,8 @@ Or delete .emacs.d/.local/straight/build-<version>/geise* , rm -rf ~/.emacs.d/.l
 (setq org-pretty-entities-include-sub-superscripts t)
 
 ;; use red to highlight bold text
-(add-to-list 'org-emphasis-alist
-             '("*" (:foreground "red")))
+;;(add-to-list 'org-emphasis-alist
+ ;;            '("*" (:foreground "red")))
 
 ;; set org-roam
 (setq org-roam-directory "~/roamnotes")
@@ -685,6 +685,9 @@ Or delete .emacs.d/.local/straight/build-<version>/geise* , rm -rf ~/.emacs.d/.l
   ;; (org-roam-setup)
   ;; )
 #+end_src
+
+#+RESULTS:
+: ~/roamnotes
 
 *** ob-http setup
 https://isamert.net/2022/01/04/dealing-with-apis-jsons-and-databases-in-org-mode.html

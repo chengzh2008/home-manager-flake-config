@@ -225,8 +225,8 @@
 (setq org-pretty-entities-include-sub-superscripts t)
 
 ;; use red to highlight bold text
-(add-to-list 'org-emphasis-alist
-             '("*" (:foreground "red")))
+;;(add-to-list 'org-emphasis-alist
+ ;;            '("*" (:foreground "red")))
 
 ;; set org-roam
 (setq org-roam-directory "~/roamnotes")
