@@ -5,6 +5,7 @@ with pkgs; [
   cachix
 
   # doom-emacs
+  csharpier
   coreutils
   fd
   emacs29

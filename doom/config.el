@@ -152,10 +152,10 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 ;;; Add to ~/.doom.d/config.el
-(setq doom-font (font-spec :family "Fira Code" :size 18)
+(setq doom-font (font-spec :family "Fira Code" :size 22)
       doom-variable-pitch-font (font-spec :family "Fira Code") ; inherits `doom-font''s :size
       doom-unicode-font (font-spec :family "Fira Mono")
-      doom-big-font (font-spec :family "Fira Code" :size 22)
+      doom-big-font (font-spec :family "Fira Code" :size 24)
 )
 
 ;; (let ((ligatures-to-disable '(:true :false :int :float :str :bool :list :and :or :for :not)))
