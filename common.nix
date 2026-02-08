@@ -11,6 +11,9 @@ with pkgs; [
   emacs29
   ripgrep
 
+  #vscode
+  vscode
+
   # common
   curl
   git
