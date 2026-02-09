@@ -19,7 +19,7 @@ with pkgs; [
   git
   gzip
   jq
-  nixFlakes
+  #nixFlakes
   nixfmt # used as doom nix formatter
   nixpkgs-fmt # used for vscode nix formatter
   wget
