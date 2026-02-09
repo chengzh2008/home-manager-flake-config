@@ -8,7 +8,7 @@ with pkgs; [
   csharpier
   coreutils
   fd
-  emacs29
+  emacs
   ripgrep
 
   #vscode
