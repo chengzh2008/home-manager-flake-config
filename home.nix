@@ -4,6 +4,7 @@ let
   common-packages = import ./common.nix pkgs;
   mbp-packages = import ./mbp.nix pkgs;
 in {
+  nix.package = pkgs.nix;
   home.username = builtins.getEnv "USER";
   home.homeDirectory = builtins.getEnv "HOME";
   home.stateVersion = "23.11";
