@@ -12,6 +12,9 @@
       theme = "robbyrussell";
     };
     initExtra = builtins.readFile ./zshrc;
+    shellAliases = {
+      code = "code 2>/dev/null";
+    };
   };
 
   fzf = { enable = true; };

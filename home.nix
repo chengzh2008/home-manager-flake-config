@@ -3,6 +3,7 @@ tag:
 let
   common-packages = import ./common.nix pkgs;
   mbp-packages = import ./mbp.nix pkgs;
+  imac-packages = import ./imac.nix pkgs;
 in {
   nix.package = pkgs.nix;
   nixpkgs.config.allowUnfree = true;
@@ -11,7 +12,7 @@ in {
   home.stateVersion = "23.11";
 
   home.packages = {
-    "imac" = common-packages;
+    "imac" = imac-packages ++ common-packages;
     "linux" = common-packages;
     "wsl" = common-packages;
     "mbp" = mbp-packages ++ common-packages;

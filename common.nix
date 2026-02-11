@@ -20,7 +20,7 @@ with pkgs; [
   gzip
   jq
   #nixFlakes
-  nixfmt # used as doom nix formatter
+  #nixfmt # used as doom nix formatter
   nixpkgs-fmt # used for vscode nix formatter
   wget
 ]
