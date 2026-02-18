@@ -5,11 +5,6 @@
 `curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 `
 
-## install doomemacs
-
-`git clone https://github.com/hlissner/doom-emacs ~/.emacs.d`
-`~/.emacs.d/bin/doom install`
-
 ## install standalone home-manager
 
 `nix-shell '<home-manager>' -A install`
@@ -20,6 +15,15 @@
 
 `cd ~/.config`
 `git clone <project-url> home-manager`
+
+## install doomemacs (optional)
+
+`git clone https://github.com/hlissner/doom-emacs ~/.emacs.d`
+`~/.emacs.d/bin/doom install`
+
+## set default shell to be zsh
+`echo "$(which zsh)" | sudo tee -a /etc/shells`
+`sudo chsh -s $(which zsh)`
 
 ## update and run
 

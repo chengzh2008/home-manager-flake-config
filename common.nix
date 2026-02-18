@@ -22,4 +22,8 @@ with pkgs; [
   nixfmt # used as doom nix formatter
   nixpkgs-fmt # used for vscode nix formatter
   wget
+  
+  # language:w
+
+  rustup
 ]
