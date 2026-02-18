@@ -9,6 +9,8 @@
 
 `nix-shell '<home-manager>' -A install`
 
+(which is not necessary as you can do this `nix run home-manager/master -- switch --impure --flake .#wsl` below)
+
 ## clone the repo
 
 `cd ~/.config`
