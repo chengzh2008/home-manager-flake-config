@@ -16,6 +16,7 @@ with pkgs; [
   # common
   curl
   git
+  git-credential-manager
   gzip
   jq
   #nixFlakes
@@ -26,4 +27,5 @@ with pkgs; [
   # language:w
 
   rustup
+  go
 ]

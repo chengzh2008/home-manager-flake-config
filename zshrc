@@ -9,6 +9,8 @@ plugins=(git vi-mode)
 
 # doom emacs
 export PATH="$PATH:$HOME/.emacs.d/bin" 
+# go tools
+export PATH="$PATH:$HOME/go/bin"
 
 # linux
 export PATH="$PATH:$HOME/.local/bin"
