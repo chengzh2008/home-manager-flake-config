@@ -5,11 +5,16 @@
 `curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 `
 
+## install doomemacs
+
+`git clone https://github.com/hlissner/doom-emacs ~/.emacs.d`
+`~/.emacs.d/bin/doom install`
+
 ## install standalone home-manager
 
 `nix-shell '<home-manager>' -A install`
 
-(which is not necessary as you can do this `nix run home-manager/master -- switch --impure --flake .#wsl` below)
+(which is not necessary as you can do this `nix run home-manager/master -- switch -b backup --impure --flake .#wsl` below)
 
 ## clone the repo
 
@@ -26,10 +31,10 @@
 
 `home-manager switch --impure --flake .#mbp`
 
-### run for a specific user on linux 
+### run for a specific user on linux
 
 `home-manager switch --impure --flake .#linux`
 
-### run for a specific user on wsl 
+### run for a specific user on wsl
 
 `home-manager switch --impure --flake .#wsl`

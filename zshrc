@@ -10,6 +10,9 @@ plugins=(git vi-mode)
 # doom emacs
 export PATH="$PATH:$HOME/.emacs.d/bin" 
 
+# linux
+export PATH="$PATH:$HOME/.local/bin"
+
 # term
 export TERM=xterm-256color
 alias ssh="TERM=xterm-256color ssh"
