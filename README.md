@@ -25,6 +25,13 @@
 `echo "$(which zsh)" | sudo tee -a /etc/shells`
 `sudo chsh -s $(which zsh)`
 
+## if the above won't work for some reason. Add this line to .bashrc will do the trick
+```bash
+if [ -t 1 ] && [ -x "$HOME/.nix-profile/bin/zsh" ]; then
+    exec "$HOME/.nix-profile/bin/zsh" -l
+fi
+```
+
 ## update and run
 
 ### run for a specific user on imac
