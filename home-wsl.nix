@@ -10,5 +10,5 @@ in {
 
   # there are issues when managing doom files through home-manager
 
-  programs = import ./programs.nix;
+  programs = import ./programs.nix pkgs;
 }

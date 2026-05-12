@@ -36,5 +36,5 @@ in {
     '';
   };
 
-  programs = import ./programs.nix;
+  programs = import ./programs.nix pkgs;
 }

@@ -10,7 +10,7 @@ with pkgs; [
   fd
   emacs
   ripgrep
-  neovim
+  # neovim - managed by lazyvim-nix
 
   #vscode
 
