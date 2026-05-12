@@ -10,6 +10,7 @@ with pkgs; [
   fd
   emacs
   ripgrep
+  neovim
 
   #vscode
 

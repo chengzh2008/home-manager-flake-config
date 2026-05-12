@@ -14,6 +14,7 @@ export PATH="$PATH:$HOME/go/bin"
 
 # linux
 export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.config/agency/CurrentVersion"
 
 # term
 export TERM=xterm-256color
