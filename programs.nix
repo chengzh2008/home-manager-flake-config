@@ -38,6 +38,7 @@ pkgs: {
       lang.python.enable = true;
       lang.dotnet.enable = true;
       lang.markdown.enable = true;
+      editor.neo-tree.enable = true;
     };
     extraPackages = with pkgs; [
       omnisharp-roslyn

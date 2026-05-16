@@ -1,5 +1,4 @@
-pkgs:
-with pkgs; [
+pkgs: with pkgs; [
   sl
   bashInteractive # related to bash config management
   cachix
@@ -24,9 +23,11 @@ with pkgs; [
   nixfmt # used as doom nix formatter
   nixpkgs-fmt # used for vscode nix formatter
   wget
-  
+  fnm # fast node version manager
+
   # language:w
 
   rustup
   go
+  python3
 ]

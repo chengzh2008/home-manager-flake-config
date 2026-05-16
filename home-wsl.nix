@@ -1,7 +1,14 @@
 tag:
-{ pkgs, config, lib, ... }:
-let common-packages = import ./common.nix pkgs;
-in {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+let
+  common-packages = import ./common.nix pkgs;
+in
+{
   home.username = builtins.getEnv "USER";
   home.homeDirectory = builtins.getEnv "HOME";
   home.stateVersion = "23.11";

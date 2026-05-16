@@ -26,6 +26,9 @@ export LANGUAGE="en_US.UTF-8"
 # direnv setup
 eval "$(direnv hook zsh)"
 
+# fnm setup
+eval "$(fnm env --use-on-cd)"
+
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
 alias firefox='/Applications/Firefox.app/Contents/MacOS/firefox'
 alias safari='open -a Safari'
