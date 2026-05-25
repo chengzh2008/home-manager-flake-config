@@ -38,6 +38,17 @@ in
     };
   };
 
+  # Create custom plugins file
+  home.file.".config/nvim/lua/plugins/mdeval.lua".text = ''
+    return {
+      {
+        'jubnzv/mdeval.nvim',
+        config = true,
+        ft = { 'markdown' },
+      }
+    }
+  '';
+
   home.activation = {
     doom = lib.hm.dag.entryAfter [ "onFilesChange" ] ''
       PATH="${config.home.path}/bin:$PATH"
