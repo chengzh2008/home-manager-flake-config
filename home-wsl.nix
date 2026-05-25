@@ -13,6 +13,8 @@ in
   home.homeDirectory = builtins.getEnv "HOME";
   home.stateVersion = "23.11";
 
+  fonts.fontconfig.enable = true;
+
   home.packages = { "wsl" = common-packages; }.${tag};
 
   # there are issues when managing doom files through home-manager

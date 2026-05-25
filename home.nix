@@ -1,22 +1,31 @@
 tag:
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   common-packages = import ./common.nix pkgs;
   mbp-packages = import ./mbp.nix pkgs;
   imac-packages = import ./imac.nix pkgs;
-in {
+  linux-packages = import ./linux.nix pkgs;
+in
+{
   nix.package = pkgs.nix;
   nixpkgs.config.allowUnfree = true;
   home.username = builtins.getEnv "USER";
   home.homeDirectory = builtins.getEnv "HOME";
   home.stateVersion = "23.11";
 
-  home.packages = {
-    "imac" = imac-packages ++ common-packages;
-    "linux" = common-packages;
-    "wsl" = common-packages;
-    "mbp" = mbp-packages ++ common-packages;
-  }.${tag};
+  home.packages =
+    {
+      "imac" = imac-packages ++ common-packages;
+      "linux" = linux-packages ++ common-packages;
+      ## "wsl" = common-packages;
+      "mbp" = mbp-packages ++ common-packages;
+    }
+    .${tag};
 
   home.file = {
     # manage doom config; installation is still manuall
