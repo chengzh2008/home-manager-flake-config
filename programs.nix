@@ -43,7 +43,7 @@ pkgs: {
     };
     extraPackages = [
       pkgs.dotnet-sdk
-      (pkgs.runCommand "omnisharp-wrapped" {} ''
+      (pkgs.runCommand "omnisharp-wrapped" { } ''
         mkdir -p $out/bin
         ln -s ${pkgs.omnisharp-roslyn}/bin/OmniSharp $out/bin/omnisharp
       '')
@@ -65,6 +65,34 @@ pkgs: {
                 }))
                 return true
               end,
+            },
+          },
+        }
+      '';
+      telescope = ''
+        return {
+          "nvim-telescope/telescope.nvim",
+          opts = {
+            defaults = {
+              path_display = { "filename_first" },
+              file_ignore_patterns = {
+                "node_modules/",
+                ".git/",
+                "bin/",
+                "obj/",
+                "Build/",
+                "Externals/",
+                "Projects/",
+                "Secrets/",
+                "TEST/",
+                "Tools/",
+                "testsrc/"
+              },
+              layout_config = {
+                horizontal = {
+                  preview_width = 0.4,
+                },
+              },
             },
           },
         }

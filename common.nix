@@ -24,6 +24,7 @@ pkgs: with pkgs; [
   nixpkgs-fmt # used for vscode nix formatter
   wget
   fnm # fast node version manager
+  statix
 
   # language:w
 
