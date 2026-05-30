@@ -39,10 +39,36 @@ pkgs: {
       lang.dotnet.enable = true;
       lang.markdown.enable = true;
       editor.neo-tree.enable = true;
+      editor.telescope.enable = true;
     };
-    extraPackages = with pkgs; [
-      omnisharp-roslyn
-      dotnet-sdk
+    extraPackages = [
+      pkgs.dotnet-sdk
+      (pkgs.runCommand "omnisharp-wrapped" {} ''
+        mkdir -p $out/bin
+        ln -s ${pkgs.omnisharp-roslyn}/bin/OmniSharp $out/bin/omnisharp
+      '')
     ];
+    plugins = {
+      omnisharp = ''
+        return {
+          "neovim/nvim-lspconfig",
+          opts = {
+            setup = {
+              omnisharp = function(_, opts)
+                require("lspconfig").omnisharp.setup(vim.tbl_deep_extend("force", opts, {
+                  cmd = { "omnisharp", "--languageserver" },
+                  root_dir = function(fname)
+                    local util = require("lspconfig.util")
+                    return util.root_pattern("*.csproj", "*.sln", "omnisharp.json")(fname)
+                      or util.root_pattern(".git")(fname)
+                  end,
+                }))
+                return true
+              end,
+            },
+          },
+        }
+      '';
+    };
   };
 }

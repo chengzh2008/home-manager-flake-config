@@ -17,6 +17,14 @@ in
 
   home.packages = { "wsl" = common-packages; }.${tag};
 
+  home.file = {
+    ".omnisharp/omnisharp.json".text = builtins.toJSON {
+      MsBuild = {
+        LoadProjectsOnDemand = true;
+      };
+    };
+  };
+
   # there are issues when managing doom files through home-manager
 
   programs = import ./programs.nix pkgs;
