@@ -22,6 +22,7 @@ in
     {
       "imac" = imac-packages ++ common-packages;
       "linux" = linux-packages ++ common-packages;
+      "linuxArm" = linux-packages ++ common-packages;
       ## "wsl" = common-packages;
       "mbp" = mbp-packages ++ common-packages;
     }
