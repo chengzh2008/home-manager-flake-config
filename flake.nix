@@ -22,6 +22,7 @@
     let
       intelmac = "x86_64-darwin"; # or aarch64-darwin
       intellinux = "x86_64-linux"; # or aarch64-darwin
+      linuxArm = "aarch64-linux"; # or aarch64-darwin
       username = builtins.getEnv "USER";
     in
     {
@@ -46,6 +47,14 @@
         modules = [
           lazyvim.homeManagerModules.default
           (import ./home.nix "linux")
+        ];
+      };
+
+      homeConfigurations.linuxArm = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${linuxArm};
+        modules = [
+          lazyvim.homeManagerModules.default
+          (import ./home.nix "linuxArm")
         ];
       };
 
