@@ -31,6 +31,10 @@ pkgs: with pkgs; [
   rustup
   go
   python3
-  uvicorn
-  fastapi
+  
+  (pkgs.python3.withPackages (ps: with ps; [
+     uvicorn
+     fastapi
+     # ...other deps
+   ]))
 ]
