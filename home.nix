@@ -50,12 +50,12 @@ in
     }
   '';
 
-  home.activation = {
-    doom = lib.hm.dag.entryAfter [ "onFilesChange" ] ''
-      PATH="${config.home.path}/bin:$PATH"
-      $HOME/.emacs.d/bin/doom sync
-    '';
-  };
+  # home.activation = {
+  #   doom = lib.hm.dag.entryAfter [ "onFilesChange" ] ''
+  #     PATH="${config.home.path}/bin:$PATH"
+  #     $HOME/.emacs.d/bin/doom sync
+  #   '';
+  # };
 
   programs = import ./programs.nix pkgs;
 }
