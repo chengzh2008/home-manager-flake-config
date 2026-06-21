@@ -46,6 +46,10 @@ fi
 
 `home-manager switch --impure --flake .#linux`
 
+### run for a specific user on linuxArm
+
+`nix run home-manager/master -- switch --flake .#linuxArm --impure`
+
 ### run for a specific user on wsl
 
 `home-manager switch --impure --flake .#wsl`
