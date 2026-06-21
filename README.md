@@ -23,7 +23,7 @@
 
 ## set default shell to be zsh
 `echo "$(which zsh)" | sudo tee -a /etc/shells`
-`sudo chsh -s $(which zsh)`
+`sudo chsh -s $(which zsh)`    # after this run, needs to logout and log back in
 
 ## if the above won't work for some reason. Add this line to .bashrc will do the trick
 ```bash
