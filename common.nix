@@ -13,6 +13,9 @@ pkgs: with pkgs; [
 
   #vscode
 
+  # cloud
+  azure-cli
+
   # common
   curl
   #git
