@@ -50,6 +50,10 @@ in
     }
   '';
 
+  # Azure DevOps / GitHub: copy/open a code link for the current line or visual selection.
+  home.file.".config/nvim/lua/codelink.lua".source = ./nvim/lua/codelink.lua;
+  home.file.".config/nvim/lua/plugins/azdo-link.lua".source = ./nvim/azdo-link.lua;
+
   # home.activation = {
   #   doom = lib.hm.dag.entryAfter [ "onFilesChange" ] ''
   #     PATH="${config.home.path}/bin:$PATH"

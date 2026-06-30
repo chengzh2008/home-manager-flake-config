@@ -19,6 +19,7 @@ pkgs: with pkgs; [
   # common
   curl
   #git
+  gh # github cli
   git-credential-manager
   gzip
   jq

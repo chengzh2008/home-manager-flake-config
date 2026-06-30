@@ -53,3 +53,16 @@ fi
 ### run for a specific user on wsl
 
 `home-manager switch --impure --flake .#wsl`
+
+## tests
+
+### nvim code-link plugin
+
+Unit tests for the Neovim "code link" helper (`nvim/lua/codelink.lua`, which
+generates Azure DevOps / GitHub links for the current line). They mock `vim`, so
+no Neovim is required:
+
+`nix-shell -p lua --run "lua nvim/tests/codelink_spec.lua"`
+
+The command exits non-zero if any assertion fails.
+
