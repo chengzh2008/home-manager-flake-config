@@ -54,6 +54,34 @@ fi
 
 `home-manager switch --impure --flake .#wsl`
 
+## neovim: grep with ripgrep args (glob filtering)
+
+`<leader>sg` (Root Dir) and `<leader>sG` (cwd) use
+[telescope-live-grep-args](https://github.com/nvim-telescope/telescope-live-grep-args.nvim),
+which lets you pass inline ripgrep args (e.g. globs) right in the prompt.
+
+Because of auto-quoting, the **search term must be quoted before any args** are
+parsed. If the prompt does not start with `"`, `'`, or `-`, the whole line is
+treated as one literal search string (so `foo -g *.cs` searches for the literal
+text "foo -g *.cs" and finds nothing).
+
+```
+"foo" -g *.cs            only .cs files
+"foo" -g !*.test.cs      exclude a glob (negative)
+"foo" --iglob **/Managers/**   path filter (case-insensitive glob)
+```
+
+Shortcuts (insert mode in the prompt):
+
+- `<C-k>` — auto-quote the current term and move the cursor after it, so you can
+  immediately type args (e.g. `-g *.cs`).
+- `<C-g>` — auto-quote the term and insert ` --iglob ` so you can type a glob
+  directly.
+
+ripgrep glob cheatsheet: `-g`/`--glob` is case-sensitive, `--iglob` is
+case-insensitive, prefix with `!` to exclude (`-g !*_test.go`), and use `**` to
+span directories (`-g **/src/**`).
+
 ## tests
 
 ### nvim code-link plugin

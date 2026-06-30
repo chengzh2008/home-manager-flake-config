@@ -72,8 +72,38 @@ pkgs: {
       telescope = ''
         return {
           "nvim-telescope/telescope.nvim",
-          opts = {
-            defaults = {
+          dependencies = {
+            "nvim-telescope/telescope-live-grep-args.nvim",
+          },
+          -- Grep with inline ripgrep args (glob include/exclude). The search
+          -- term must be QUOTED before any args are parsed, e.g.
+          --   "foo" -g *.lua        (only .lua files)
+          --   "foo" -g !*.test.ts   (exclude, negative glob)
+          -- Press <C-k> to auto-quote the term + start typing args, or
+          -- <C-g> to auto-quote + insert " --iglob ".
+          keys = {
+            {
+              "<leader>sg",
+              function()
+                local t = require("telescope")
+                pcall(t.load_extension, "live_grep_args")
+                t.extensions.live_grep_args.live_grep_args({ cwd = LazyVim.root() })
+              end,
+              desc = "Grep w/ args (Root Dir)",
+            },
+            {
+              "<leader>sG",
+              function()
+                local t = require("telescope")
+                pcall(t.load_extension, "live_grep_args")
+                t.extensions.live_grep_args.live_grep_args({ cwd = vim.uv.cwd() })
+              end,
+              desc = "Grep w/ args (cwd)",
+            },
+          },
+          opts = function(_, opts)
+            local lga_actions = require("telescope-live-grep-args.actions")
+            opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
               path_display = { "filename_first" },
               file_ignore_patterns = {
                 "node_modules/",
@@ -93,8 +123,20 @@ pkgs: {
                   preview_width = 0.4,
                 },
               },
-            },
-          },
+            })
+            opts.extensions = vim.tbl_deep_extend("force", opts.extensions or {}, {
+              live_grep_args = {
+                auto_quoting = true,
+                mappings = {
+                  i = {
+                    ["<C-k>"] = lga_actions.quote_prompt(),
+                    ["<C-g>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                  },
+                },
+              },
+            })
+            return opts
+          end,
         }
       '';
     };
