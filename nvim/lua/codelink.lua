@@ -145,7 +145,35 @@ function M.copy(visual)
   vim.notify("Code link copied:\n" .. url)
 end
 
--- Pick an ordered list of URL-opener argv prefixes for the current OS.
+-- Quote a URL for embedding inside a single-quoted PowerShell string.
+local function ps_single_quote(url)
+  return "'" .. url:gsub("'", "''") .. "'"
+end
+
+-- A "plain" opener passes the URL as the final argv element (safe for openers
+-- that use standard argv parsing, e.g. wslview / xdg-open).
+local function plain(...)
+  local prefix = { ... }
+  return function(url)
+    local argv = {}
+    for _, a in ipairs(prefix) do
+      argv[#argv + 1] = a
+    end
+    argv[#argv + 1] = url
+    return prefix[1], argv
+  end
+end
+
+-- PowerShell opener: the URL must be embedded (single-quoted) in the command so
+-- that ADO query strings (which contain "&") are not truncated/mangled. This is
+-- why explorer.exe fails for ADO links but works for GitHub ones.
+local function powershell(url)
+  return "powershell.exe",
+    { "powershell.exe", "-NoProfile", "-Command", "Start-Process " .. ps_single_quote(url) }
+end
+
+-- Ordered list of URL openers for the current OS. Each entry is a function that
+-- takes the URL and returns (exe, argv).
 local function openers()
   local is_wsl = vim.fn.has("wsl") == 1
   if not is_wsl then
@@ -157,15 +185,15 @@ local function openers()
   end
 
   if is_wsl then
-    -- explorer.exe opens the default Windows browser; argv form keeps ADO
-    -- URLs (which contain "&") intact without shell interpretation.
-    return { { "wslview" }, { "explorer.exe" }, { "sensible-browser" }, { "xdg-open" } }
+    -- Prefer wslview / PowerShell over explorer.exe: explorer.exe truncates
+    -- URLs at "&", so ADO query-string links never open.
+    return { plain("wslview"), powershell, plain("xdg-open"), plain("sensible-browser") }
   elseif vim.fn.has("mac") == 1 then
-    return { { "open" } }
+    return { plain("open") }
   elseif vim.fn.has("win32") == 1 then
-    return { { "explorer.exe" } }
+    return { powershell }
   end
-  return { { "xdg-open" }, { "gio", "open" }, { "sensible-browser" }, { "x-www-browser" } }
+  return { plain("xdg-open"), plain("gio", "open"), plain("sensible-browser"), plain("x-www-browser") }
 end
 
 function M.open(visual)
@@ -173,13 +201,9 @@ function M.open(visual)
   if not url then
     return
   end
-  for _, prefix in ipairs(openers()) do
-    if vim.fn.executable(prefix[1]) == 1 then
-      local argv = {}
-      for _, a in ipairs(prefix) do
-        argv[#argv + 1] = a
-      end
-      argv[#argv + 1] = url
+  for _, make in ipairs(openers()) do
+    local exe, argv = make(url)
+    if exe and vim.fn.executable(exe) == 1 then
       local ok, job = pcall(vim.fn.jobstart, argv, { detach = true })
       if ok and type(job) == "number" and job > 0 then
         vim.notify("Opening code link:\n" .. url)
