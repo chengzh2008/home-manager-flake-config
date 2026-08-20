@@ -54,6 +54,9 @@ in
   home.file.".config/nvim/lua/codelink.lua".source = ./nvim/lua/codelink.lua;
   home.file.".config/nvim/lua/plugins/azdo-link.lua".source = ./nvim/azdo-link.lua;
 
+  # Auto-refresh buffers when the underlying file changes on disk.
+  home.file.".config/nvim/lua/plugins/autoreload.lua".source = ./nvim/autoreload.lua;
+
   # home.activation = {
   #   doom = lib.hm.dag.entryAfter [ "onFilesChange" ] ''
   #     PATH="${config.home.path}/bin:$PATH"

@@ -64,5 +64,41 @@ whoport() {
 
 
 
+# --- GNOME Keyring (WSL) ----------------------------------------------------
+# Secure, persistent secret storage via the Secret Service API (org.freedesktop.secrets).
+# Starts a single daemon per session (reused by later shells) and unlocks the
+# password-protected "login" keyring. On the very first run, the password you
+# type becomes the keyring password; it is created encrypted at
+# ~/.local/share/keyrings/login.keyring.
+if grep -qiE 'microsoft|wsl' /proc/version 2>/dev/null; then
+  export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+  # Ensure the user D-Bus session bus is running (WSL doesn't start it on login).
+  if [ ! -S "$XDG_RUNTIME_DIR/bus" ]; then
+    systemctl --user start dbus.socket 2>/dev/null
+  fi
+  export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+
+  keyring-unlock() {
+    if pgrep -u "$USER" -f gnome-keyring-daemon >/dev/null 2>&1; then
+      echo "gnome-keyring is already running." >&2
+      return 0
+    fi
+    local _kr_pw
+    printf 'Unlock GNOME keyring: '
+    read -rs _kr_pw; printf '\n'
+    # PAM-style two-phase init: unlock the login keyring, then register services.
+    printf '%s' "$_kr_pw" | gnome-keyring-daemon --daemonize --login --components=secrets >/dev/null 2>&1
+    gnome-keyring-daemon --start --components=secrets >/dev/null 2>&1
+    unset _kr_pw
+  }
+
+  # Auto-unlock once per session, only in an interactive terminal.
+  if [[ -o interactive ]] && [ -t 0 ] \
+     && ! pgrep -u "$USER" -f gnome-keyring-daemon >/dev/null 2>&1; then
+    keyring-unlock
+  fi
+fi
+# ----------------------------------------------------------------------------
+
 # private stuff
 source ~/.private.zshrc 2> /dev/null

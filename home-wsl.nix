@@ -15,7 +15,15 @@ in
 
   fonts.fontconfig.enable = true;
 
-  home.packages = { "wsl" = common-packages; }.${tag};
+  home.packages =
+    {
+      "wsl" = common-packages ++ [
+        pkgs.gnome-keyring # secret-service daemon + gnome-keyring-daemon
+        pkgs.libsecret # provides the `secret-tool` CLI
+        pkgs.gcr # provides gcr-prompter (GUI unlock, optional)
+      ];
+    }
+    .${tag};
 
   home.file = {
     ".omnisharp/omnisharp.json".text = builtins.toJSON {
