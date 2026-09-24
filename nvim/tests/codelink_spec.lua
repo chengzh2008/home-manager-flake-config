@@ -77,15 +77,15 @@ end
 -- parse_remote
 -- ---------------------------------------------------------------------------
 do
-  local i = codelink.parse_remote("https://powerbi@dev.azure.com/powerbi/Power%20BI/_git/powerbi")
+  local i = codelink.parse_remote("https://build@dev.azure.com/contoso/Example%20Project/_git/ExampleRepo")
   eq(i and i.kind, "azdo", "parse: azdo https kind")
-  eq(i and i.org, "powerbi", "parse: azdo https org")
-  eq(i and i.project, "Power%20BI", "parse: azdo https project")
-  eq(i and i.repo, "powerbi", "parse: azdo https repo")
+  eq(i and i.org, "contoso", "parse: azdo https org")
+  eq(i and i.project, "Example%20Project", "parse: azdo https project")
+  eq(i and i.repo, "ExampleRepo", "parse: azdo https repo")
 
-  i = codelink.parse_remote("git@ssh.dev.azure.com:v3/powerbi/Power BI/powerbi")
+  i = codelink.parse_remote("git@ssh.dev.azure.com:v3/contoso/Example Project/ExampleRepo")
   eq(i and i.kind, "azdo", "parse: azdo ssh kind")
-  eq(i and i.project, "Power BI", "parse: azdo ssh project")
+  eq(i and i.project, "Example Project", "parse: azdo ssh project")
 
   i = codelink.parse_remote("https://contoso.visualstudio.com/MyProj/_git/MyRepo")
   eq(i and i.kind, "azdo", "parse: azdo legacy kind")
@@ -124,10 +124,10 @@ do
     "url_for: github encodes spaces, adds leading slash"
   )
 
-  local ado = { kind = "azdo", org = "powerbi", project = "Power%20BI", repo = "powerbi" }
+  local ado = { kind = "azdo", org = "contoso", project = "Example%20Project", repo = "ExampleRepo" }
   eq(
-    codelink.url_for(ado, "/Sql/CloudBI/AS/src/Datamarts/Managers/Managers/DatamartsUpdateManager.cs", "master", 429, 429),
-    "https://dev.azure.com/powerbi/Power%20BI/_git/powerbi?path=/Sql/CloudBI/AS/src/Datamarts/Managers/Managers/DatamartsUpdateManager.cs&version=GBmaster&_a=contents&line=429&lineEnd=430&lineStartColumn=1&lineEndColumn=1&lineStyle=plain",
+    codelink.url_for(ado, "/src/services/ExampleManager.cs", "master", 429, 429),
+    "https://dev.azure.com/contoso/Example%20Project/_git/ExampleRepo?path=/src/services/ExampleManager.cs&version=GBmaster&_a=contents&line=429&lineEnd=430&lineStartColumn=1&lineEndColumn=1&lineStyle=plain",
     "url_for: azdo matches reference URL"
   )
 end
@@ -153,10 +153,11 @@ do
   env.vline, env.line = 431, 429
   eq(codelink.build(true), "https://github.com/octo/My-Repo/blob/master/src/app/Main.cs#L429-L431", "build: github reversed selection")
 
-  env.remote, env.line, env.vline = "https://powerbi@dev.azure.com/powerbi/Power%20BI/_git/powerbi", 429, 429
+  env.remote, env.line, env.vline =
+    "https://build@dev.azure.com/contoso/Example%20Project/_git/ExampleRepo", 429, 429
   eq(
     codelink.build(false),
-    "https://dev.azure.com/powerbi/Power%20BI/_git/powerbi?path=/src/app/Main.cs&version=GBmaster&_a=contents&line=429&lineEnd=430&lineStartColumn=1&lineEndColumn=1&lineStyle=plain",
+    "https://dev.azure.com/contoso/Example%20Project/_git/ExampleRepo?path=/src/app/Main.cs&version=GBmaster&_a=contents&line=429&lineEnd=430&lineStartColumn=1&lineEndColumn=1&lineStyle=plain",
     "build: azdo normal mode"
   )
 

@@ -1,58 +1,162 @@
-## how to use
+# Home Manager config
 
-## install nix
+## Variants
+
+Shared settings live at the repository root. Machine-specific settings live in:
+
+```text
+variants/
+├── imac/
+├── linux/
+├── mbp/
+└── wsl/
+```
+
+Each variant supports:
+
+- `default.nix`: imports and general Home Manager options
+- `packages.nix`: the variant's complete `home.packages` list
+- `files.nix`: the variant's complete `home.file` configuration
+- `programs.nix`: complete Zsh, FZF, tmux, direnv, LazyVim, and other program options
+- `zshrc`: the variant's complete Zsh initialization
+- `nvim/`: files overlaid onto `~/.config/nvim`
+- `doom/`: files overlaid onto `~/.doom.d`
+- `home/`: arbitrary files overlaid directly onto the home directory
+
+Only add files that differ from the shared configuration. For example,
+`variants/wsl/nvim/lua/plugins/example.lua` becomes
+`~/.config/nvim/lua/plugins/example.lua`. A variant file at the same relative
+path as a shared file replaces the shared file.
+
+Home Manager manages files for the configured user, not system-wide. For
+example, `variants/wsl/home/.config/tool/config.toml` becomes
+`~/.config/tool/config.toml`. Generated files can still be declared directly in
+the variant's `default.nix` with `home.file.<name>.text`.
+
+Each `files.nix` currently imports `modules/shared-home-files.nix` to retain the
+shared Doom and Neovim files. Remove that import and define `home.file` directly
+when a variant needs a completely different file set.
+
+Activation hooks are also variant-local. Define them in `default.nix`, or add an
+`activation.nix` module to that variant's imports:
+
+```nix
+{
+  imports = [
+    ./activation.nix
+    ./files.nix
+    ./packages.nix
+  ];
+}
+```
+
+Program options are fully independent between variants:
+
+```nix
+{ ... }:
+{
+  programs.zsh.shellAliases.work = "cd ~/work";
+  programs.lazyvim.extras.lang.rust.enable = true;
+}
+```
+
+Variant editor files use their normal target-relative paths:
+
+```text
+variants/mbp/
+├── programs.nix
+├── nvim/lua/plugins/mbp.lua
+└── doom/config.el
+```
+
+The iMac, MacBook Pro, and WSL variants enable minimal LazyVim configurations.
+The full language extras and Telescope customization live in
+`variants/linux/programs.nix`, which is used by both `linux` and `linuxArm`.
+
+To add a variant, add one entry to `variants` in `flake.nix` and create its
+`variants/<name>/default.nix`. The `linuxArm` output intentionally reuses the
+`linux` variant.
+
+## Install
+
+### Nix
 
 `curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 `
 
-## install standalone home-manager
+### Standalone Home Manager
 
 `nix-shell '<home-manager>' -A install`
 
 (which is not necessary as you can do this `nix run home-manager/master -- switch -b backup --impure --flake .#wsl` below)
 
-## clone the repo
+### Clone this repository
 
 `cd ~/.config`
 `git clone <project-url> home-manager`
 
-## install doomemacs (optional)
+### Doom Emacs (optional)
 
 `git clone https://github.com/hlissner/doom-emacs ~/.emacs.d`
 `~/.emacs.d/bin/doom install`
 
-## set default shell to be zsh
-`echo "$(which zsh)" | sudo tee -a /etc/shells`
-`sudo chsh -s $(which zsh)`    # after this run, needs to logout and log back in
+### Set Zsh as the default shell
 
-## if the above won't work for some reason. Add this line to .bashrc will do the trick
+Register Zsh as an allowed login shell with elevated permissions, then change
+the current user's shell without `sudo`:
+
+```bash
+zsh_path="$(command -v zsh)"
+grep -qxF "$zsh_path" /etc/shells || echo "$zsh_path" | sudo tee -a /etc/shells
+chsh -s "$zsh_path"
+```
+
+Using `sudo chsh -s "$zsh_path"` without specifying a username can change
+root's shell instead. Log out and back in after running `chsh`.
+
+If that does not work, add this to `.bashrc`:
+
 ```bash
 if [ -t 1 ] && [ -x "$HOME/.nix-profile/bin/zsh" ]; then
     exec "$HOME/.nix-profile/bin/zsh" -l
 fi
 ```
 
-## update and run
+## Apply a variant
 
-### run for a specific user on imac
+### iMac
 
 `home-manager switch --impure --flake .#imac`
 
-### run for a specific user on mbp
+### MacBook Pro
 
 `home-manager switch --impure --flake .#mbp`
 
-### run for a specific user on linux
+### Linux
 
 `home-manager switch --impure --flake .#linux`
 
-### run for a specific user on linuxArm
+### ARM Linux
 
 `nix run home-manager/master -- switch --flake .#linuxArm --impure`
 
-### run for a specific user on wsl
+### WSL
 
 `home-manager switch --impure --flake .#wsl`
+
+## Neovim icons
+
+Neovim icons require Nerd Font glyphs. GNOME Terminal may not reliably render a
+separate symbol fallback, while fully patched fonts can change character
+spacing. The Linux variant therefore configures Kitty with Ubuntu Mono for text
+and maps Nerd Font codepoints explicitly to Symbols Nerd Font Mono. Install the
+Ubuntu package with `sudo apt install kitty`, then run `kitty` and start Neovim
+inside it. Home Manager manages `kitty.conf` but does not install the Kitty
+binary.
+
+For WSL, install the Nerd Font on Windows and select it in the Windows Terminal
+Ubuntu profile. Installing a font only inside WSL does not make it available to
+the Windows terminal renderer.
 
 ## neovim: grep with ripgrep args (glob filtering)
 
@@ -93,4 +197,3 @@ no Neovim is required:
 `nix-shell -p lua --run "lua nvim/tests/codelink_spec.lua"`
 
 The command exits non-zero if any assertion fails.
-
