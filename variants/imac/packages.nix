@@ -1,0 +1,30 @@
+{ pkgs, ... }:
+{
+  home.packages = with pkgs; [
+    sl
+    bashInteractive
+    cachix
+    csharpier
+    coreutils
+    fd
+    emacs
+    ripgrep
+    azure-cli
+    curl
+    gh
+    git-credential-manager
+    gzip
+    jq
+    nixfmt
+    nixpkgs-fmt
+    wget
+    fnm
+    statix
+    rustup
+    go
+    python3
+    uv
+    tmux
+    nerd-fonts.jetbrains-mono
+  ];
+}

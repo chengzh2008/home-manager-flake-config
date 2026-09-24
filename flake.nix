@@ -20,51 +20,46 @@
       ...
     }:
     let
-      intelmac = "x86_64-darwin"; # or aarch64-darwin
-      intellinux = "x86_64-linux"; # or aarch64-darwin
-      linuxArm = "aarch64-linux"; # or aarch64-darwin
-      username = builtins.getEnv "USER";
+      variants = {
+        mbp = {
+          system = "x86_64-darwin";
+          directory = ./variants/mbp;
+        };
+        imac = {
+          system = "x86_64-darwin";
+          directory = ./variants/imac;
+        };
+        linux = {
+          system = "x86_64-linux";
+          directory = ./variants/linux;
+        };
+        linuxArm = {
+          system = "aarch64-linux";
+          directory = ./variants/linux;
+        };
+        wsl = {
+          system = "x86_64-linux";
+          directory = ./variants/wsl;
+        };
+      };
+
+      mkHomeConfiguration =
+        _:
+        {
+          system,
+          directory,
+        }:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${system};
+          modules = [
+            lazyvim.homeManagerModules.default
+            ./home.nix
+            (directory + "/default.nix")
+          ];
+        };
     in
     {
-      homeConfigurations.mbp = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${intelmac};
-        modules = [
-          lazyvim.homeManagerModules.default
-          (import ./home.nix "mbp")
-        ];
-      };
-
-      homeConfigurations.imac = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${intelmac};
-        modules = [
-          lazyvim.homeManagerModules.default
-          (import ./home.nix "imac")
-        ];
-      };
-
-      homeConfigurations.linux = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${intellinux};
-        modules = [
-          lazyvim.homeManagerModules.default
-          (import ./home.nix "linux")
-        ];
-      };
-
-      homeConfigurations.linuxArm = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${linuxArm};
-        modules = [
-          lazyvim.homeManagerModules.default
-          (import ./home.nix "linuxArm")
-        ];
-      };
-
-      homeConfigurations.wsl = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${intellinux};
-        modules = [
-          lazyvim.homeManagerModules.default
-          (import ./home-wsl.nix "wsl")
-        ];
-      };
+      homeConfigurations = builtins.mapAttrs mkHomeConfiguration variants;
     }
     // flake-utils.lib.eachDefaultSystem (system: {
       defaultPackage.${system} = home-manager.defaultPackage.${system};

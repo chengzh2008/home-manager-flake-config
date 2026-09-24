@@ -1,0 +1,50 @@
+# doom emacs
+export PATH="$PATH:$HOME/.emacs.d/bin"
+# go tools
+export PATH="$PATH:$HOME/go/bin"
+export PATH="$PATH:$HOME/.local/bin"
+
+export TERM=xterm-256color
+alias ssh="TERM=xterm-256color ssh"
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+export LANGUAGE="en_US.UTF-8"
+export TERMINFO_DIRS=/usr/share/terminfo
+
+eval "$(direnv hook zsh)"
+eval "$(fnm env --use-on-cd)"
+
+bindkey '^f' autosuggest-accept
+
+whoport() {
+  lsof -nP -i4TCP:"$1" | grep LISTEN
+}
+
+# Start and unlock a Secret Service keyring in WSL.
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+if [ ! -S "$XDG_RUNTIME_DIR/bus" ]; then
+  systemctl --user start dbus.socket 2>/dev/null
+fi
+export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+
+keyring-unlock() {
+  if pgrep -u "$USER" -f gnome-keyring-daemon >/dev/null 2>&1; then
+    echo "gnome-keyring is already running." >&2
+    return 0
+  fi
+
+  local _kr_pw
+  printf 'Unlock GNOME keyring: '
+  read -rs _kr_pw
+  printf '\n'
+  printf '%s' "$_kr_pw" | gnome-keyring-daemon --daemonize --login --components=secrets >/dev/null 2>&1
+  gnome-keyring-daemon --start --components=secrets >/dev/null 2>&1
+  unset _kr_pw
+}
+
+if [[ -o interactive ]] && [ -t 0 ] \
+   && ! pgrep -u "$USER" -f gnome-keyring-daemon >/dev/null 2>&1; then
+  keyring-unlock
+fi
+
+source ~/.private.zshrc 2> /dev/null
